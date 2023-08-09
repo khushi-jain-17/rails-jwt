@@ -5,4 +5,10 @@ class Movie < ApplicationRecord
   has_many :users, through: :reviews, dependent: :destroy
   validates :name, presence: true
   validates :rating, presence: true
+
+  def update_average_rating
+    self.rating = reviews.average(:star)&.round(1)
+    save
+  end
+
 end

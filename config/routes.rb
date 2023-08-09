@@ -1,11 +1,14 @@
 Rails.application.routes.draw do
-  resources :users
-  resources :movie
+
   post '/auth/login', to: 'authentication#login'
+  resources :users
+  #resources :movie
+  get '/category', to: 'category#index', as: :category_movies
+ 
   # get '/about', to: 'movie#about'
   # get '/search', to: 'movie#search'
-  # get '/category', to: 'categories#index', as: :category_movies
-  # resources :movie do
-  #   resources :review 
-  #end
+
+  resources :movie do
+    resources :review 
+  end
 end

@@ -10,4 +10,5 @@ class Review < ApplicationRecord
   def update_movie_average_rating
     movie.update_average_rating
   end
+  
 end

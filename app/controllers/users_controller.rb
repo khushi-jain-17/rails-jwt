@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create]
-  before_action :set_user, only: [:show, :destroy]
+  skip_before_action :authenticate_request, only: [:create, :update, :destroy]
+  before_action :set_user, only: [:show, :update, :destroy]
 
   def index
   	@users = User.all
@@ -16,27 +16,31 @@ class UsersController < ApplicationController
   	if @user.save
   		render json: @user, status: :created
   	else
-  		render json: { errors: @user.errors.full_messages }, status: :unprocessable_entity
+  		render json: @user.errors, status: :unprocessable_entity
   	end
   end
 
-   def update
-    unless @user.update(user_params)
-      render json: { errors: @user.errors.full_messages },
-             status: :unprocessable_entity
-    end
-   end
+  def update
+      if @user.update(user_params)
+        render json: @user, status: :ok
+      else
+        render json: @user.errors, status: :unprocessable_entity
+      end
+  end
 
   def destroy
     @user.destroy
+    render json: { message: 'user successfully deleted'}, status: :ok  
   end
 
   private
+
     def user_params
-      params.permit(:username, :email, :password)
+      params.require(:user).permit(:username, :email, :password, :name)
     end
 
     def set_user
       @user= User.find(params[:id])
     end
+    
 end
