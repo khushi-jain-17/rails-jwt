@@ -1,5 +1,6 @@
 class ReviewController < ApplicationController
   skip_before_action :authenticate_request, only: [:create,:update, :destroy]
+  before_action :movie_object, only: [:create, :destroy, :update]
   before_action :movie_review, only: [:show, :update, :destroy]
 
   def index
@@ -12,7 +13,8 @@ class ReviewController < ApplicationController
   end
 
   def create
-  	@review=Review.new(review_params)
+  	@review=@movie.reviews.new(review_params)
+  	@review.user = current_user
   	if @review.save
   	  render json: @review, status: :created
   	else
@@ -33,7 +35,7 @@ class ReviewController < ApplicationController
     render json: { message: 'review successfully deleted'}, status: :ok  
   end
 
-  private
+   private
    
    def movie_object
    	@movie= Movie.find(params[:movie_id])

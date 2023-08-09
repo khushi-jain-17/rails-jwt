@@ -2,7 +2,7 @@ Rails.application.routes.draw do
 
   post '/auth/login', to: 'authentication#login'
   resources :users
-  #resources :movie
+  resources :review
   get '/category', to: 'category#index', as: :category_movies
  
   # get '/about', to: 'movie#about'

@@ -39,7 +39,9 @@ gem "rack-cors"
 gem 'jwt'
 # Use ActiveModel has_secure_password
 gem 'bcrypt', '~> 3.1.7'
+
 gem 'active_model_serializers'
+
 group :development, :test do
   gem 'database_cleaner-active_record'
   gem 'factory_bot_rails'
