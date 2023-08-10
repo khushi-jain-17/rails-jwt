@@ -6,7 +6,7 @@ FactoryBot.define do
     director { "MyString" }
     user { nil }
     category { nil }
-    released_on { "2023-08-08" }
+    released_on { "2024-08-08" }
     association :user
     association :category
   end

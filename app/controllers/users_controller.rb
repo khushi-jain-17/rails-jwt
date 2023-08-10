@@ -21,11 +21,11 @@ class UsersController < ApplicationController
   end
 
   def update
-      if @user.update(user_params)
-        render json: @user, status: :ok
-      else
-        render json: @user.errors, status: :unprocessable_entity
-      end
+    if @user.update(user_params)
+      render json: @user, status: :ok
+    else
+      render json: @user.errors, status: :unprocessable_entity
+    end
   end
 
   def destroy

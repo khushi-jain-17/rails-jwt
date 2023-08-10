@@ -50,6 +50,7 @@ group :development, :test do
   gem 'shoulda-matchers', '~> 5.0'
   gem 'byebug', platform: :mri
   #gem 'factory_girl_rails'
+  gem 'faker'
   gem 'capybara'
   gem 'database_cleaner'
   gem 'debug', platforms: %i[mri mingw x64_mingw]

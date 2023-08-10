@@ -33,6 +33,13 @@ class MovieController < ApplicationController
     render json: { message: 'movie successfully deleted'}, status: :ok  
   end
 
+  def about
+  end
+
+  def search
+    
+  end
+
   private
     def movie_params
       params.require(:movie).permit(:name, :rating, :description, :director, :released_on, :category_id, :user_id)
