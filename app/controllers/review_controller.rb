@@ -14,7 +14,6 @@ class ReviewController < ApplicationController
 
   def create
   	@review=@movie.reviews.new(review_params)
-  	@review.user = current_user
   	if @review.save
   	  render json: @review, status: :created
   	else
