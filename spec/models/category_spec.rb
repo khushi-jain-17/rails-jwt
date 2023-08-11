@@ -1,5 +1,7 @@
 require 'rails_helper'
 
 RSpec.describe Category, type: :model do
-  it { should have_many(:movies) }	
+  describe 'association' do
+    it { should have_many(:movies) }
+  end	
 end

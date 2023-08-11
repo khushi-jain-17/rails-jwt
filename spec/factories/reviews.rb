@@ -3,8 +3,8 @@ FactoryBot.define do
 
     body { "MyString" }
     star { 1 }
-    #user { nil }
-    #movie { nil }
+    user { nil }
+    movie { nil }
     association :user, factory: :user
     association :movie
 
