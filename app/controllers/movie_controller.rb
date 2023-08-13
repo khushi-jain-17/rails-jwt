@@ -30,22 +30,19 @@ class MovieController < ApplicationController
 
   def destroy
     @movie.destroy
-    render json: { message: 'movie successfully deleted'}, status: :ok  
+    head :no_content
   end
 
   def about
-  end
-
-  def search
-    
-  end
+  end    
 
   private
     def movie_params
-      params.require(:movie).permit(:name, :rating, :description, :director, :released_on, :category_id, :user_id)
+      params.permit(:name, :rating, :description, :director, :released_on, :category_id, :user_id)
     end
 
     def set_movie
       @movie= Movie.find(params[:id])
     end	
+    
 end

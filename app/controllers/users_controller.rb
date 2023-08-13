@@ -30,7 +30,7 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    render json: { message: 'user successfully deleted'}, status: :ok  
+    head :no_content  
   end
 
   private

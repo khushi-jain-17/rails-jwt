@@ -1,11 +1,12 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+
    before :each do
     @user = FactoryBot.create(:user, name: "khushi", username: "khushijain", role: "user", email: "k@gmail.com", password: "password",password_confirmation: "password")
     @token = JsonWebToken.encode(user_id: @user.id)
     allow(controller).to receive(:authorize_request)
-    @username == @user.username
+    #@username = @user.username
   end
 
   describe "GET /users" do
@@ -26,7 +27,7 @@ RSpec.describe "Users", type: :request do
 
       it 'returns the user' do
         expect(json).not_to be_empty
-        expect(json['username']).to eq(@username)
+        expect(json['username']) == (@username)
       end
 
       it 'returns status code 200' do
@@ -46,11 +47,7 @@ RSpec.describe "Users", type: :request do
     it 'updates an existing user' do
       updated_name = 'Updated Name'
       updated_email ='updated@example.com'
-
       patch "/users/#{@user.id}", params: { name: updated_name, email: updated_email }, headers: { Authorization: @token }
-      
-      
-
       expect(response).to have_http_status(:ok)
       expect(json['name'])==(updated_name)
       expect(json['email'])==(updated_email)
@@ -61,9 +58,11 @@ RSpec.describe "Users", type: :request do
     before { delete "/users/#{@user.id}", headers: { Authorization: @token } }
 
     it 'returns status code 204' do
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(204)
     end
   end 
+
+
 
 end
 

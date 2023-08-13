@@ -7,7 +7,7 @@ FactoryBot.define do
     user { nil }
     category { nil }
     released_on { "2024-08-08" }
-    association :user
-    association :category
+    #association :user
+    #association :category
   end
 end
