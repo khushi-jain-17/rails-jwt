@@ -10,7 +10,7 @@ RSpec.describe "Users", type: :request do
   end
 
   describe "GET /users" do
-    before { get '/users', headers: { Authorization: @token } }
+    before { get "/users", headers: { Authorization: @token } }
 
     it 'returns users' do
       expect(json).not_to be_empty
@@ -38,7 +38,7 @@ RSpec.describe "Users", type: :request do
 
     describe 'POST #create' do
     it 'creates a new user' do
-      post '/users', params: { name: "Ankit", username: "ankit", role: "user", email: "ankit@gmail.com", password: "password", password_confirmation: "password" }, headers: { Authorization: @token }
+      post "/users", params: { name: "Ankit", username: "ankit", role: "user", email: "ankit@gmail.com", password: "password", password_confirmation: "password" }, headers: { Authorization: @token }
       expect(response).to have_http_status(:created)
     end
     end

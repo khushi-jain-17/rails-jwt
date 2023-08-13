@@ -5,8 +5,8 @@ FactoryBot.define do
     star { 1 }
     user { nil }
     movie { nil }
-    association :user, factory: :user
-    association :movie
+    #association :user, factory: :user
+    #association :movie
 
   end
 end

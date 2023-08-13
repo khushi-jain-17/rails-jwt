@@ -11,7 +11,7 @@ RSpec.describe "Movies", type: :request do
   end
 
   describe "GET /index" do
-    before { get '/movie', headers: { Authorization: @token } }
+    before { get "/movie", headers: { Authorization: @token } }
 
     it 'returns all movies' do
       expect(json.size) == (2)
@@ -35,7 +35,7 @@ RSpec.describe "Movies", type: :request do
         name: 'titanic',
         rating: 4
       }
-      post '/movie', params: movie_params, headers: { Authorization: @token }
+      post "/movie", params: movie_params, headers: { Authorization: @token }
       expect(response).to have_http_status(:created)
     end
   end
