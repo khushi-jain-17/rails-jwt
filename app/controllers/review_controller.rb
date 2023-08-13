@@ -1,15 +1,15 @@
 class ReviewController < ApplicationController
   skip_before_action :authenticate_request, only: [:create,:update, :destroy]
-  before_action :movie_object, only: [:create, :destroy, :update]
-  before_action :movie_review, only: [:show, :update, :destroy]
+  before_action :movie_object, only: [:create, :show, :destroy, :update]
+  before_action :movie_review, only: [:index, :show, :update, :destroy]
 
   def index
     @reviews=Review.all
-    render json: @reviews, status: :ok
+    render json: @reviews, status: :ok, each_serializer: ReviewSerializer
   end
 
   def show
-  	render json: @review, status: :ok
+  	render json: @review, status: :ok, each_serializer: ReviewSerializer
   end
 
   def create
@@ -23,7 +23,7 @@ class ReviewController < ApplicationController
 
   def update
     if @review.update(review_params)
-        render json: @review, status: :ok
+        render json: @review, notice: "updated"
     else
         render json: @review.errors, status: :unprocessable_entity
     end

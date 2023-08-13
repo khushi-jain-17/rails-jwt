@@ -1,8 +1,20 @@
 class UserSerializer < ActiveModel::Serializer
+  attributes :user
 
-  attributes :id, :username, :email, :password, :name, :role
-  has_many :reviews, dependent: :destroy
-  has_many :movies, through: :reviews, dependent: :destroy
-  has_many :movies, dependent: :destroy
+  def user
+    {
+      id: object.id,
+      username: object.username,
+      name: object.name, 
+      email: object.email, 
+      password: object.password,
+      role: object.role
+    }
+  end
+    
+  has_many :reviews, serializer: ReviewSerializer
+  has_many :movies, serializer: MovieSerializer
   
 end
+
+

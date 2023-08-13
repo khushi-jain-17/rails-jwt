@@ -4,8 +4,8 @@ Rails.application.routes.draw do
   resources :users
   resources :review
   get '/category', to: 'category#index', as: :category_movies
-  resources :movie
-  get '/about', to: 'movie#about'
+  
+  get '/about',  to: 'movie#about'
   get '/search', to: 'movie#search'
 
   resources :movie do

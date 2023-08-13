@@ -4,11 +4,11 @@ class MovieController < ApplicationController
 
   def index
     @movies=Movie.all
-    render json: @movies, status: :ok
+    render json: @movies, status: :ok, each_serializer: MovieSerializer
   end
 
   def show
-  	render json: @movie, status: :ok
+  	render json: @movie, status: :ok, each_serializer: MovieSerializer
   end
 
   def create
@@ -16,13 +16,13 @@ class MovieController < ApplicationController
   	if @movie.save
   		render json: @movie, status: :created
   	else
-      render json: @movie.errors, status: :unprocessable_entity
+      render json: @movie.errors, status: :unproscessable_entity
   	end
   end
 
   def update
       if @movie.update(movie_params)
-        render json: @movie, status: :ok
+        render json: @movie, notice: "Successfully Updated"
       else
         render json: @movie.errors, status: :unprocessable_entity
       end
