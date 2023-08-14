@@ -1,7 +1,7 @@
 class ReviewController < ApplicationController
   skip_before_action :authenticate_request, only: [:create,:update, :destroy]
-  #before_action :movie_object, only: [:create, :show, :destroy, :update]
-  before_action :movie_review, only: [:index, :show, :update, :destroy]
+  before_action :movie_object, only: [:create, :show, :destroy, :update]
+  before_action :movie_review, only: [:index, :create, :show, :update, :destroy]
 
   def index
     @reviews=Review.all
@@ -13,7 +13,9 @@ class ReviewController < ApplicationController
   end
 
   def create
-  	@review=@movie.review.new(review_params)
+    byebug
+  	@review=@movie.reviews.new(review_params)
+    #@review.user= current_user
   	if @review.save
   	  render json: @review, status: :created
   	else
@@ -36,13 +38,12 @@ class ReviewController < ApplicationController
 
    private
    
-   # def movie_object
-   # 	@movie= Movie.find(params[:movie_id])
-   # end
+   def movie_object
+   	@movie= Movie.find(params[:movie_id])
+   end
    
    def movie_review
-    @movie = Movie.find(params[:movie_id])
-    @reviews = @movie.reviews
+    @review = @movie.reviews.find(params[:id])
    end
 
    # def movie_review

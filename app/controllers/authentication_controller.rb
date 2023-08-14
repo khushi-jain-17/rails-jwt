@@ -1,5 +1,5 @@
 #require Rails.root.join('app', 'controllers', 'concerns', 'json_web_token')
-#require_relative '../app/controllers/concerns/json_web_token'
+require_relative '../app/controllers/concerns/json_web_token'
 
 class AuthenticationController < ApplicationController
   skip_before_action :authenticate_request
