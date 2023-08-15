@@ -27,6 +27,21 @@ RSpec.describe "Movies", type: :request do
 
   end
 
+  describe 'GET /movie/:id' do
+    before { get "/movie/#{@movie.id}", headers: { Authorization: @token } }
+    context 'when the record exists' do
+
+      it 'returns the movie' do
+        expect(json).not_to be_empty
+        expect(json['name']) == (@name)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
   describe 'POST /create' do
     it "creates a new movie" do 
       movie_params = {

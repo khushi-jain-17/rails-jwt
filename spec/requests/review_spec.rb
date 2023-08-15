@@ -3,9 +3,9 @@ require 'rails_helper'
 RSpec.describe "Reviews", type: :request do
   
   before :each do
-    @user= FactoryBot.create(:user, name: "khushi",username: "khushijain", role: "user", email: "k@gmail.com", password: "password",password_confirmation: "password")
+    @user= FactoryBot.create(:user, name: "jay",username: "jain", role: "user", email: "jay@gmail.com", password: "password",password_confirmation: "password")
     @category = FactoryBot.create(:category, name: "hollywood")
-    @movie= FactoryBot.create(:movie, name: "avenger",rating: 3, user_id: @user.id, category_id: @category.id, description: nil,director: nil)
+    @movie= FactoryBot.create(:movie, name: "titanic",rating: 3, user_id: @user.id, category_id: @category.id, description: nil,director: nil)
     @review= FactoryBot.create(:review, star: 4, user_id: @user.id, movie_id: @movie.id)
     @token = JsonWebToken.encode(user_id: @user.id)
     allow(controller).to receive(:authorize_request)
@@ -14,7 +14,7 @@ RSpec.describe "Reviews", type: :request do
   describe "GET /index" do
     before { get "/movie/#{@movie.id}/review/#{@review.id}", headers: { Authorization: @token } }
     it 'returns all reviews' do
-      expect(json.size) == (5)
+      expect(json.size) == (6)
     end
     it 'returns status code 200' do
       expect(response).to have_http_status(200)
@@ -25,11 +25,41 @@ RSpec.describe "Reviews", type: :request do
 
   end
 
+  describe 'GET /review/:id' do
+    before { get "/movie/#{@movie.id}/review/#{@review.id}", headers: { Authorization: @token } }
+    context 'when the record exists' do
+
+      it 'returns the review' do
+        expect(json).not_to be_empty
+        expect(json['star']) == (@star)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
    describe 'POST /create' do
-    it "creates a new movie review" do 
+    it "creates a new review" do 
   
       r_params = {
-        review: {
+        user: {
+          name: 'jay',
+          username: 'jay',
+          email: 'j@gmail.com',
+          password: 'password'
+        },
+        category: {
+          name: "hollywood"
+        },
+        movie: {
+          category_id: @category.id,
+          user_id: @user.id,
+          name: "inception",
+          rating: 3
+        },
+        review: { 
         user_id: @user.id,
         movie_id: @movie.id,
         star: 3,
@@ -37,7 +67,7 @@ RSpec.describe "Reviews", type: :request do
       }
     }
       post "/movie/#{@movie.id}/review" , params: r_params, headers: { Authorization: @token }
-      expect(response).to have_http_status(201)
+      expect(response).to have_http_status(:created)
     end
   end
 

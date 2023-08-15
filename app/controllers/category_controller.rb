@@ -1,5 +1,5 @@
 class CategoryController < ApplicationController
-  skip_before_action :authenticate_request, only: [:create]
+  skip_before_action :authenticate_request
 
   def index
   	@categories = Category.all

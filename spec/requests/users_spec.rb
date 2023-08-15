@@ -6,7 +6,6 @@ RSpec.describe "Users", type: :request do
     @user = FactoryBot.create(:user, name: "khushi", username: "khushijain", role: "user", email: "k@gmail.com", password: "password",password_confirmation: "password")
     @token = JsonWebToken.encode(user_id: @user.id)
     allow(controller).to receive(:authorize_request)
-    #@username = @user.username
   end
 
   describe "GET /users" do
