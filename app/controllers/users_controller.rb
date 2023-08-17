@@ -4,7 +4,7 @@ class UsersController < ApplicationController
 
   def index
   	@users = User.all
-  	render json: @users, status: :ok
+  	render json: @users, status: :ok, each_serializer: UserSerializer
   end
 
   def show
@@ -12,7 +12,7 @@ class UsersController < ApplicationController
   end
 
   def create
-  	@user=User.new(user_params)
+    @user=User.new(user_params)
   	if @user.save
   		render json: @user, status: :created
   	else
@@ -30,13 +30,13 @@ class UsersController < ApplicationController
 
   def destroy
     @user.destroy
-    render json: { message: 'user successfully deleted'}, status: :ok  
+    head :no_content  
   end
 
   private
 
     def user_params
-      params.require(:user).permit(:username, :email, :password, :name, :role)
+      params.permit(:username, :email, :password, :name, :role)
     end
 
     def set_user

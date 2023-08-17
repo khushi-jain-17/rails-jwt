@@ -1,18 +1,18 @@
 class MovieSerializer < ActiveModel::Serializer
-	
-  attributes :description, :director, :released_on, :user_id, :category_id, :movie
-  
+  attributes :movie
   def movie
     {
-      id: object.movie.id,
-      name: object.movie.name,
-      rating: object.rating
+      name: object.name, 
+      rating: object.rating, 
+      description: object.description, 
+      director: object.director, 
+      released_on: object.released_on
     }
   end
-
-  belongs_to :user
-  belongs_to :category
-  has_many :reviews, dependent: :destroy
-  has_many :users, through: :reviews, dependent: :destroy
-
+  belongs_to :user, serializer: UserSerializer
+  belongs_to :category, serializer: CategorySerializer
+  has_many :reviews, serializer: ReviewSerializer
 end
+
+
+

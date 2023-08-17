@@ -11,5 +11,6 @@ RSpec.describe Movie, type: :model do
    it { should belong_to(:category) }
    it { should have_many(:users) }
    it { should have_many(:reviews) }
-  end 
+  end
+
 end

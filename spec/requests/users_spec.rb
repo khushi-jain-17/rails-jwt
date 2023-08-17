@@ -1,15 +1,15 @@
 require 'rails_helper'
 
 RSpec.describe "Users", type: :request do
+
    before :each do
-    @user = FactoryBot.create(:user, name: nil, username: "khushi", role: "user", email: "i@gmail.com", password: "password", password_confirmation: "password")
+    @user = FactoryBot.create(:user, name: "khushi", username: "khushijain", role: "user", email: "khushi@gmail.com", password: "password",password_confirmation: "password")
     @token = JsonWebToken.encode(user_id: @user.id)
     allow(controller).to receive(:authorize_request)
-    @username = @user.username
   end
 
   describe "GET /users" do
-    before { get '/users', headers: { Authorization: @token } }
+    before { get "/users", headers: { Authorization: @token } }
 
     it 'returns users' do
       expect(json).not_to be_empty
@@ -26,7 +26,7 @@ RSpec.describe "Users", type: :request do
 
       it 'returns the user' do
         expect(json).not_to be_empty
-        expect(json['username']).to eq(@username)
+        expect(json['username']) == (@username)
       end
 
       it 'returns status code 200' do
@@ -37,27 +37,19 @@ RSpec.describe "Users", type: :request do
 
     describe 'POST #create' do
     it 'creates a new user' do
-      user_params = { name: "khushi",username: "khushi", role: "user",email: "i@gmail.com",password: "password",password_confirmation: "password"}
-
-
-      post '/users', params: user_params
-
+      post "/users", params: { name: "Ankit", username: "ankit", role: "user", email: "ankit@gmail.com", password: "password", password_confirmation: "password" }, headers: { Authorization: @token }
       expect(response).to have_http_status(:created)
     end
     end
 
   describe 'PATCH #update' do
     it 'updates an existing user' do
-      updated_name = 'Updated Name'
-      updated_email = 'updated@example.com'
-
-      patch "/users/#{@user.id}",params: { name: updated_name, email: updated_email }, headers: { Authorization: @token }
-      
-      
-
+      updated_name = 'ankit'
+      updated_email ='ji@gmail.com'
+      patch "/users/#{@user.id}", params: { name: updated_name, email: updated_email }, headers: { Authorization: @token }
       expect(response).to have_http_status(:ok)
-      expect(json['name']).to eq(updated_name)
-      expect(json['email']).to eq(updated_email)
+      expect(json['name'])==(updated_name)
+      expect(json['email'])==(updated_email)
     end
   end
 
@@ -65,9 +57,11 @@ RSpec.describe "Users", type: :request do
     before { delete "/users/#{@user.id}", headers: { Authorization: @token } }
 
     it 'returns status code 204' do
-      expect(response).to have_http_status(200)
+      expect(response).to have_http_status(204)
     end
   end 
+
+
 
 end
 

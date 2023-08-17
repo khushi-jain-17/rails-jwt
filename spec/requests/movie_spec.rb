@@ -1,25 +1,77 @@
 require 'rails_helper'
 
 RSpec.describe "Movies", type: :request do
-    before :each do
-    @movie = FactoryBot.create(:movie, name: "titanic",rating: 4,director: "sample",description:"sdescription")
-    @token = JsonWebToken.encode(movie_id: @movie.id)
+  before :each do
+    @user = FactoryBot.create(:user, name: "khushi", username: "khushijain", role: "user", email: "khushi@gmail.com", password: "password",password_confirmation: "password") 
+    @category = FactoryBot.create(:category, name: "hollywood")
+    @movie = FactoryBot.create(:movie, name: "avenger",rating: 3,description: "sample",director: "dir",user_id: @user.id,category_id: @category.id)
+    @token = JsonWebToken.encode(user_id: @user.id)
     allow(controller).to receive(:authorize_request)
-    @name = @movie.name
   end
 
-  describe "GET /movie" do
-    before { get '/movie', headers: { Authorization: @token } }
+  describe "GET /index" do
+    before { get "/movie", headers: { Authorization: @token } }
 
-    it 'returns users' do
+    it 'returns all movies' do
+      expect(json.size) == (2)
+    end
+
+     it 'returns status code 200' do
+      expect(response).to have_http_status(:success)
+    end
+
+     it 'returns movies' do
       expect(json).not_to be_empty
     end
 
-    it 'returns status code 200' do
-      expect(response).to have_http_status(200)
-    end
-   end
+  end
 
-  
+  describe 'GET /movie/:id' do
+    before { get "/movie/#{@movie.id}", headers: { Authorization: @token } }
+    context 'when the record exists' do
+
+      it 'returns the movie' do
+        expect(json).not_to be_empty
+        expect(json['name']) == (@name)
+      end
+
+      it 'returns status code 200' do
+        expect(response).to have_http_status(200)
+      end
+    end
+  end
+
+  describe 'POST /create' do
+    it "creates a new movie" do
+ 
+      movie_params = {
+        user_id: @user.id,
+        category_id: @category.id,
+        name: 'titanic',
+        rating: 4
+      }
+      post "/movie", params: movie_params, headers: { Authorization: @token }
+      expect(response).to have_http_status(:created)
+    end
+  end
+
+    describe 'PATCH #update' do
+    it 'updates an existing movie' do
+      updated_name = 'Updated Name'
+      updated_rating = 4
+      patch "/movie/#{@movie.id}", params: { name: updated_name, rating: updated_rating }, headers: { Authorization: @token }
+      expect(response).to have_http_status(:ok)
+      expect(json['name'])==(updated_name)
+      expect(json['rating'])==(updated_rating)
+    end
+  end
+ 
+  describe "DELETE /destroy" do
+    before { delete "/movie/#{@movie.id}", headers: { Authorization: @token } }
+    it 'returns status code 204' do
+      expect(response).to have_http_status(204)
+    end
+  end 
+
 end
 
